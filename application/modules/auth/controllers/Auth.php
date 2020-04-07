@@ -22,6 +22,10 @@ class Auth extends MY_Controller
 	{
 		$this->load->view('forgot');
 	}
+	public function landing()
+	{
+		$this->load->view('landing');
+	}
 	public function reset()
 	{
 		$data = $this->model->forgot();

@@ -42,41 +42,100 @@ class Auth_model extends CI_Model
                     'id_role' => $cek->id_role
                 ];
                 $this->session->set_userdata($data);
-                return $data['status'] = site_url('admin');
+                $data = [
+                    'status' => true,
+                    'pesan' => 'Selamat Datang ' . $user,
+                    'url' => site_url('admin')
+                ];
+            } else {
+                $data = [
+                    'status' => false,
+                    'pesan' => "Username atau Password salah"
+                ];
             }
-            return $data['status'] = 'Username Atau Password salah';
+        } else {
+            $data = [
+                'status' => false,
+                'pesan' => "Akun tidak ditemukan"
+            ];
         }
-        return $data['status'] = 'Akun Tidak Ditemukan';
+        return $data;
     }
     public function forgot()
     {
-        $email = $this->input->get('email');
-        $token = $this->input->get('token');
-        $cek = $this->db->get_where('token', ['email' => $email, 'token' => $token])->row();
-        if ($cek) {
+        $email = htmlspecialchars($this->input->post('email'));
+        $pass = htmlspecialchars($this->input->post('password'));
+        $token = $this->input->post('token');
+        $user = $this->db->get_where($this->table, ['email' => $email])->row();
+        if ($user) {
+            $cek = $this->db->get_where('tokens', ['token' => $token])->row();
+            if ($cek) {
+                if (time() - $cek->date_created < (60 * 60 * 24)) {
+                    $data = [
+                        'password' => password_hash($pass, PASSWORD_DEFAULT)
+                    ];
+                    $this->db->where($this->id, $user->id_user);
+                    $this->db->update($this->table, $data);
+
+                    $this->db->where('email', $email);
+                    $this->db->delete('tokens');
+                    $data = [
+                        'status' => true,
+                        'pesan' => 'Password Berhasil dirubah'
+                    ];
+                } else {
+                    $data = [
+                        'status' => false,
+                        'pesan' => 'Token Expired'
+                    ];
+                }
+            } else {
+                $data = [
+                    'status' => false,
+                    'pesan' => 'Token salah'
+                ];
+            }
+        } else {
             $data = [
-                'password' => $this->input->post('password')
+                'status' => false,
+                'pesan' => 'Email tidak di temukan'
             ];
-            $this->db->where('email', $cek->email);
-            $this->db->update($this->table, $data);
         }
-        
+
+        return $data;
     }
     public function reset()
     {
         $email = htmlspecialchars($this->input->post('email'));
         $cek = $this->db->get_where($this->table, ['email' => $email])->row();
         if ($cek) {
-            $token = base64_encode(random_bytes(32));
+            $ada = $this->db->get_where('tokens', ['email' => $email])->row();
+            if ($ada) {
+                $token = base64_encode(random_bytes(32));
+                $data = [
+                    'token' => $token,
+                    'date_created' => time()
+                ];
+                $this->db->where('email', $email);
+                $this->db->update('tokens', $data);
+                return $this->_sendEmail($token, $email);
+            } else {
+                $token = base64_encode(random_bytes(32));
+                $data = [
+                    'email' => $email,
+                    'token' => $token,
+                    'date_created' => time()
+                ];
+                $this->db->insert('tokens', $data);
+                return $this->_sendEmail($token, $email);
+            }
+        } else {
             $data = [
-                'email' => $email,
-                'token' => $token,
-                'date_created' => time()
+                'status' => false,
+                'pesan' => 'Email tidak ditemukan'
             ];
-            $this->db->insert('token', $data);
-            $this->_sendEmail($token, $email);
         }
-        return $data['status'] = 'Email Tidak Ditemukan';
+        return $data;
     }
     private function _sendEmail($token, $email)
     {
@@ -93,14 +152,19 @@ class Auth_model extends CI_Model
 
         $this->load->library('email');
         $this->email->initialize($config);
-        $this->email->from('rocker.hunt@gmail.com', 'Reset Password');
+        $this->email->from('rocker.hunt@gmail.com', 'Admin');
         $this->email->to($email);
         $this->email->subject('Reset Password');
-        $this->email->message("Klik link untuk reset password : <a href='" . site_url() . "auth/forgot?email=$email&token=$token'>Reset Password</a>");
+        $this->email->message('klik link untuk reset password : <a href="' . site_url() . '/auth/landing?email=' . $email . '&token=' . urlencode($token) . '">Reset Password</a>');
         if ($this->email->send()) {
-            return $data['status'] = 'Token berhasil dikirim Silahkan cek Email';
+            $data['status'] = true;
+            $data['pesan'] = 'Token berhasil dikirim Silahkan cek Email';
+            $data['url'] = site_url('auth');
+            return $data;
         } else {
-            return $data['status'] = $this->email->print_debugger();
+            $data['status'] = false;
+            $data['pesan'] = 'Maaf terjadi kesalahan Silahkan mencoba kembali nanti';
+            return $data;
         }
     }
 }

@@ -49,12 +49,27 @@
                 contentType: false,
                 async: false,
                 success: result => {
-                    console.log(result);
-                    if (result.username) {
-                        $('[for="username"]').html(result.username);
+                    if (result.status == false) {
+                        swal({
+                            title: result.pesan,
+                            text: 'Silahkan mencoba kembali !',
+                            icon: 'error',
+                            timer: 2000,
+                            buttons: false
+                        })
                     }
-                    if (result.password) {
-                        $('[for="password"]').html(result.password);
+                    if (result.status == true) {
+                        swal({
+                            title: result.pesan,
+                            icon: 'success',
+                            timer: 2000,
+                            buttons: false
+                        })
+                        if (result.url) {
+                            setTimeout(function() {
+                                window.location.href = result.url;
+                            }, 2000)
+                        }
                     }
                 }
             })
