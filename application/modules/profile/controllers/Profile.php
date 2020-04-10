@@ -5,6 +5,9 @@ class Profile extends MY_Controller
 {
     public function __construct()
     {
+        if (!$this->session->userdata('role')) {
+			redirect('auth');
+		}
         parent::__construct();
         $this->load->model('profile_model', 'model');
     }

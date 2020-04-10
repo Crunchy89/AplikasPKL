@@ -156,11 +156,13 @@ class Auth_model extends CI_Model
             'smtp_pass' => 'Makannasi',
             'smtp_port' => 465,
             'mailType' => 'html',
-            'charset' => 'utf-8',
-            'newline' => "\r\n"
+            'charset' => 'iso-8859-1',
+            'wordwrap' => TRUE,
         ];
-
         $this->load->library('email', $config);
+        $this->email->set_newline("\r\n");
+        $this->email->set_header('MIME-Version', '1.0; charset=utf-8');
+        $this->email->set_header('Content-type', 'text/html');
         $this->email->from('your.email.aja@gmail.com', 'Admin');
         $this->email->to($email);
         $this->email->subject('Reset Password');

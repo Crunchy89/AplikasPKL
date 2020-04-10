@@ -37,8 +37,6 @@ class User extends MY_Controller
 	function getLists()
 	{
 		$data = array();
-
-		// Fetch member's records
 		$user = $this->model->getRows($_POST);
 
 		$i = $_POST['start'];
@@ -50,7 +48,7 @@ class User extends MY_Controller
 			if ($this->session->userdata('role') != 1) {
 				if ($d->id_user != 1) {
 					$i++;
-					if ($d->is_active == 1) {
+					if ($d->status_user == 1) {
 						$active = '<input type="checkbox" ' . $disabled . ' name="active" data-id_user="' . $d->id_user . '" data-active="' . $d->status_user . '" form-control-sm" id="active" checked>';
 					} else {
 						$active = '<input type="checkbox" ' . $disabled . ' name="active" data-id_user="' . $d->id_user . '" data-active="' . $d->status_user . '" form-control-sm" id="active" >';

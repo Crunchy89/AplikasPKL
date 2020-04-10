@@ -5,6 +5,9 @@ class Auth extends MY_Controller
 {
 	public function __construct()
 	{
+		if ($this->session->userdata('role') && $this->session->userdata('role') != 1) {
+			redirect('admin');
+		}
 		parent::__construct();
 		$this->load->model('auth_model', 'model');
 		$this->load->library('form_validation');
