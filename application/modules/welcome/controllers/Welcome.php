@@ -27,7 +27,7 @@ class Welcome extends MY_Controller
 						'file' => $this->upload->data('file_name')
 					];
 				} else {
-					$data['file'] = "noada.png";
+					$data['file'] = "noimage.png";
 				}
 
 				$this->db->insert('file', $data);

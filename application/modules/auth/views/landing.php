@@ -11,7 +11,7 @@
     <title>Reset Password</title>
     <link rel="apple-touch-icon" href="<?= base_url() ?>assets/img/apple-touch-icon-152x152.png">
     <link rel="shortcut icon" type="image/x-icon" href="<?= base_url() ?>assets/img/favicon-32x32.png">
-    <link href="<?= base_url() ?>assets/vendor/icon" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/vendor/vendors.min.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/vendor/materialize.min.css">
     <link rel="stylesheet" type="text/css" href="<?= base_url() ?>assets/vendor/style.min.css">
@@ -23,7 +23,7 @@
     <script src="<?= base_url() ?>assets/vendor/extra-components-sweetalert.min.js"></script>
 </head>
 
-<body class="vertical-layout vertical-menu-collapsible page-header-dark vertical-modern-menu 1-column login-bg blank-page blank-page" data-col="1-column">>
+<body class="vertical-layout vertical-menu-collapsible page-header-dark vertical-modern-menu 1-column login-bg blank-page blank-page" data-col="1-column">
     <div class="row">
         <div class="col s12">
             <div class="container">

@@ -36,17 +36,28 @@ class Auth_model extends CI_Model
         $cek = $this->db->get_where($this->table, ['username' => $user])->row();
         if ($cek) {
             if (password_verify($pass, $cek->password)) {
-                $data = [
-                    'id_user' => $cek->id_user,
-                    'username' => $cek->username,
-                    'id_role' => $cek->id_role
-                ];
-                $this->session->set_userdata($data);
-                $data = [
-                    'status' => true,
-                    'pesan' => 'Selamat Datang ' . $user,
-                    'url' => site_url('admin')
-                ];
+                if ($cek->status_user == 1) {
+                    $data = [
+                        'user' => $cek->id_user,
+                        'username' => $cek->username,
+                        'role' => $cek->id_role,
+                        'civitas' => $cek->id_civitas
+                    ];
+                    $this->session->set_userdata($data);
+                    $this->db->set('tgl_mulai', date('Y-m-d H-i-s'));
+                    $this->db->where($this->id, $cek->id_user);
+                    $this->db->update($this->table);
+                    $data = [
+                        'status' => true,
+                        'pesan' => 'Selamat Datang ' . $user,
+                        'url' => site_url('admin')
+                    ];
+                } else {
+                    $data = [
+                        'status' => false,
+                        'pesan' => "Akun nonaktif silahkan hubungi Admin"
+                    ];
+                }
             } else {
                 $data = [
                     'status' => false,
@@ -150,8 +161,9 @@ class Auth_model extends CI_Model
             'newline' => "\r\n"
         ];
 
-        $this->load->library('email');
-        $this->email->initialize($config);
+        $this->load->library('email', $config);
+        // $this->email->set_newline("\r\n");
+        // $this->email->initialize($config);
         $this->email->from('rocker.hunt@gmail.com', 'Admin');
         $this->email->to($email);
         $this->email->subject('Reset Password');

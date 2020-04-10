@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- saved from url=(0119)https://pixinvent.com/materialize-material-design-admin-template/html/ltr/vertical-modern-menu-template/user-login.html -->
 <html class="loading" lang="en">
 
 <head>
@@ -30,7 +29,7 @@
     </script>
 </head>
 
-<body class="vertical-layout vertical-menu-collapsible page-header-dark vertical-modern-menu 1-column login-bg blank-page blank-page" data-col="1-column">>
+<body class="vertical-layout vertical-menu-collapsible page-header-dark vertical-modern-menu 1-column login-bg blank-page blank-page" data-col="1-column">
     <?= $view ?>
     <script src="<?= base_url() ?>assets/vendor/plugins.min.js"></script>
     <script src="<?= base_url() ?>assets/vendor/search.min.js"></script>
