@@ -77,7 +77,7 @@ class Auth_model extends CI_Model
         $email = htmlspecialchars($this->input->post('email'));
         $pass = htmlspecialchars($this->input->post('password'));
         $token = $this->input->post('token');
-        $user = $this->db->get_where($this->table, ['email' => $email])->row();
+        $user = $this->db->get_where('tb_civitas', ['email' => $email])->row();
         if ($user) {
             $cek = $this->db->get_where('tokens', ['token' => $token])->row();
             if ($cek) {
@@ -85,9 +85,8 @@ class Auth_model extends CI_Model
                     $data = [
                         'password' => password_hash($pass, PASSWORD_DEFAULT)
                     ];
-                    $this->db->where($this->id, $user->id_user);
+                    $this->db->where($this->id, $user->id_civitas);
                     $this->db->update($this->table, $data);
-
                     $this->db->where('email', $email);
                     $this->db->delete('tokens');
                     $data = [
@@ -118,7 +117,7 @@ class Auth_model extends CI_Model
     public function reset()
     {
         $email = htmlspecialchars($this->input->post('email'));
-        $cek = $this->db->get_where($this->table, ['email' => $email])->row();
+        $cek = $this->db->get_where('tb_civitas', ['email' => $email])->row();
         if ($cek) {
             $ada = $this->db->get_where('tokens', ['email' => $email])->row();
             if ($ada) {
@@ -153,8 +152,8 @@ class Auth_model extends CI_Model
         $config = [
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_user' => 'rocker.hunt@gmail.com',
-            'smtp_pass' => 'basong666',
+            'smtp_user' => 'your_email@gmail.com',
+            'smtp_pass' => 'your_password',
             'smtp_port' => 465,
             'mailType' => 'html',
             'charset' => 'utf-8',
@@ -162,9 +161,7 @@ class Auth_model extends CI_Model
         ];
 
         $this->load->library('email', $config);
-        // $this->email->set_newline("\r\n");
-        // $this->email->initialize($config);
-        $this->email->from('rocker.hunt@gmail.com', 'Admin');
+        $this->email->from('your_email@gmail.com', 'Admin');
         $this->email->to($email);
         $this->email->subject('Reset Password');
         $this->email->message('klik link untuk reset password : <a href="' . site_url() . '/auth/landing?email=' . $email . '&token=' . urlencode($token) . '">Reset Password</a>');
@@ -180,3 +177,4 @@ class Auth_model extends CI_Model
         }
     }
 }
+

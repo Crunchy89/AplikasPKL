@@ -7,7 +7,7 @@ class Civitas_model extends CI_Model
     {
         $this->table = 'tb_civitas';
         $this->id = 'id_civitas';
-        $this->column_order = array(null, 'nik', 'nm_lengkap', 'alamat', 'tlp', 'email', 'website', null);
+        $this->column_order = array(null, 'nik', 'nm_lengkap', 'alamat', 'tlp', 'email', 'website', null, null, null);
         $this->column_search = array('nik', 'nm_lengkap', 'alamat', 'tlp', 'email', 'website');
         $this->order = array('id_civitas' => 'asc');
     }
