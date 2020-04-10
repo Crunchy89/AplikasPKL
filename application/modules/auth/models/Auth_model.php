@@ -152,8 +152,8 @@ class Auth_model extends CI_Model
         $config = [
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_user' => 'your_email@gmail.com',
-            'smtp_pass' => 'your_password',
+            'smtp_user' => 'your.email.aja@gmail.com',
+            'smtp_pass' => 'Makannasi',
             'smtp_port' => 465,
             'mailType' => 'html',
             'charset' => 'utf-8',
@@ -161,7 +161,7 @@ class Auth_model extends CI_Model
         ];
 
         $this->load->library('email', $config);
-        $this->email->from('your_email@gmail.com', 'Admin');
+        $this->email->from('your.email.aja@gmail.com', 'Admin');
         $this->email->to($email);
         $this->email->subject('Reset Password');
         $this->email->message('klik link untuk reset password : <a href="' . site_url() . '/auth/landing?email=' . $email . '&token=' . urlencode($token) . '">Reset Password</a>');
