@@ -15,8 +15,10 @@ class Admin extends MY_Controller
 
 	public function index()
 	{
+		$id_civitas = $this->session->userdata('civitas');
 		$data = [
-			'title' => "Admin Page"
+			'title' => "Admin Page",
+			'profile' => $this->db->get_where('tb_civitas', ['id_civitas' => $id_civitas])->row()
 		];
 		admin('index', $data);
 	}

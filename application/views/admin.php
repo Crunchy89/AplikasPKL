@@ -59,8 +59,8 @@
 
         <header class="main-header">
             <a href="#" class="logo">
-                <span class="logo-mini LOGO"><img class="user-image" src="<?= base_url() ?>assets/img/user.png" width="40px" height="40px" alt="Logo"></span>
-                <span class="logo-lg LOGO"><img class="user-image" src="<?= base_url() ?>assets/img/user.png" width="40px" height="40px" alt="Logo"></span>
+                <span class="logo-mini LOGO">Stilo</span>
+                <span class="logo-lg LOGO">STMIK LOMBOK</span>
             </a>
             <nav class="navbar navbar-static-top">
                 <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
@@ -74,20 +74,19 @@
                     <ul class="nav navbar-nav">
                         <li class="dropdown user user-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="<?= base_url() ?>assets/img/user.png" class="user-image" alt="User Image">
+                                <img src="<?= base_url() ?>assets/img/profile/<?= $profile->foto ?>" class="user-image" alt="User Image">
                                 <span class="hidden-xs"><?= $this->session->userdata('username') ?></span>
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="user-header">
-                                    <img src="<?= base_url() ?>assets/img/user.png" class="img-circle" alt="User Image">
+                                    <img src="<?= base_url() ?>assets/img/profile/<?= $profile->foto ?>" class="img-circle" alt="User Image">
                                     <p>
-                                        Alexander Pierce - Web Developer
+                                        <?= $this->session->userdata('username') ?>
                                     </p>
                                 </li>
-                                <!-- Menu Footer-->
                                 <li class="user-footer">
                                     <div class="pull-left">
-                                        <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                        <a href="#" id="prof" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
                                         <a href="<?= site_url('admin/logout') ?>" class="btn btn-default btn-flat">Sign out</a>
@@ -99,11 +98,8 @@
                 </div>
             </nav>
         </header>
-        <!-- Left side column. contains the logo and sidebar -->
         <aside class="main-sidebar">
-            <!-- sidebar: style can be found in sidebar.less -->
             <section class="sidebar">
-                <!-- Sidebar user panel -->
                 <div class="user-panel">
                     <div class="pull-left image">
                         <img src="<?= base_url() ?>assets/img/user.png" class="img-circle" alt="User Image">
@@ -137,6 +133,9 @@
     <script src="<?= base_url() ?>assets/dist/js/demo.js"></script>
     <script>
         $(document).ready(function() {
+            $('#prof').click(function(e) {
+                $('#show_data').load('profile');
+            })
             toastr.options = {
                 "closeButton": true,
                 "debug": false,
